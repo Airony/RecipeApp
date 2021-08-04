@@ -1,12 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { resolve } = require('path');
-
-const app = express();
+const pool = require('./config/db.js');
 
 dotenv.config({
   path: resolve(__dirname, '../.env'),
 });
+
+const app = express();
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
