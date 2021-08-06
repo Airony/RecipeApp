@@ -20,7 +20,6 @@ const getUsers = asyncHandler(async (req, res) => {
 //@route    POST /api/users
 //access    public
 const addUser = asyncHandler(async (req, res) => {
-  try {
     let fullName = req.body.fullName;
     let email = req.body.email;
     let password = req.body.password;
@@ -34,9 +33,7 @@ const addUser = asyncHandler(async (req, res) => {
       [fullName, email, hashedPassword, profilePicture]
     );
     res.status(200).json(rows);
-  } catch (error) {
-    console.log(error);
   }
-});
+);
 
 module.exports = { getUsers, addUser };
