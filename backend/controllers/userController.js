@@ -10,7 +10,7 @@ const getUsers = asyncHandler(async (req, res) => {
     const { rows, fields } = await pool.query(
       'SELECT userId, full_name from "user";'
     );
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +33,7 @@ const addUser = asyncHandler(async (req, res) => {
       'INSERT INTO "user" (full_name, email, password, profile_picture) VALUES($1,$2,$3,$4);',
       [fullName, email, hashedPassword, profilePicture]
     );
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (error) {
     console.log(error);
   }

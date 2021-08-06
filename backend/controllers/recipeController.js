@@ -10,7 +10,7 @@ const getRecipes = asyncHandler(async (req, res) => {
     const { rows, fields } = await pool.query(
       'SELECT * from "recipe";'
     );
-    res.json(rows);
+    res.status(200).json(rows);
   } catch (error) {
     console.log(error);
   }
