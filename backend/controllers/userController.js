@@ -36,4 +36,42 @@ const addUser = asyncHandler(async (req, res) => {
   }
 );
 
-module.exports = { getUsers, addUser };
+//@desc    Auth user and set session cookie
+//@route    POST /api/users/login
+//access    public
+const authUser = asyncHandler(async (req, res) => {
+
+    let {email, password} = req.body
+
+    if(!(email && password)) {
+      res.status(400)
+      throw new Error("Missing credentials.")
+    }
+    console.log("wtf")
+    const { rows, fields } = await pool.query(
+      'SELECT userId,password FROM "user" WHERE email = $1',
+      [email]
+    );
+
+    if(rows.length == 0) {
+      res.status(404);
+      throw new Error("Wrong email.")
+    }
+    console.log(rows[0])
+    const userPassword = rows[0].password
+    const userId = rows[0].userid
+
+    console.log(password,userPassword)
+    if(!await bcrypt.compare(password,userPassword)) {
+      res.status(401)
+      throw new Error("Wrong password.")
+    }
+    req.session.userId = userId
+    console.log(req.session)
+    res.status(200).end();
+  }
+);
+
+
+
+module.exports = { getUsers, addUser,authUser };
