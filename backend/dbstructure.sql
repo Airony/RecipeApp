@@ -1,7 +1,7 @@
 CREATE TABLE "user"(
     userId SERIAL PRIMARY KEY NOT NULL,
     full_name VARCHAR(50) NOT NULL,
-    profile_picture TEXT NOT NULL,
+    profile_picture TEXT,
     email VARCHAR(255) NOT NULL UNIQUE,
     password TEXT NOT NULL UNIQUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -18,9 +18,8 @@ CREATE TABLE "recipe"(
     ingredients VARCHAR(100)[] NOT NULL,
     steps VARCHAR(300)[] NOT NULL,
     notes TEXT NOT NULL,
-    image TEXT,
+    image TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-
 );
 
 CREATE TABLE "comment"(
