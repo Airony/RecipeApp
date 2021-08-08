@@ -1,3 +1,7 @@
+CREATE TYPE difficulty AS ENUM ('Easy','Intermediate','Hard');
+CREATE TYPE category AS ENUM ('Appeteizer','Main Course','Dessert','Drink');
+
+
 CREATE TABLE "user"(
     userId SERIAL PRIMARY KEY NOT NULL,
     full_name VARCHAR(50) NOT NULL,
@@ -11,10 +15,10 @@ CREATE TABLE "recipe"(
     recipeId SERIAL PRIMARY KEY NOT NULL,
     userId INT NOT NULL references "user"(userId) ON DELETE CASCADE,
     title VARCHAR(25) NOT NULL,
-    avg_rating SMALLINT NOT NULL,
+    avg_rating SMALLINT DEFAULT 0,
     description VARCHAR(500) NOT NULL,
-    difficulty VARCHAR(30) NOT NULL,
-    category VARCHAR(30) NOT NULL,
+    recipe_difficulty difficulty NOT NULL,
+    recipe_category category NOT NULL,
     ingredients VARCHAR(100)[] NOT NULL,
     steps VARCHAR(300)[] NOT NULL,
     notes TEXT NOT NULL,
