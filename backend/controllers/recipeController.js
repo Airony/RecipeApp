@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const pool = require("../config/db.js");
+const { INVALID_TEXT_REPRESENTATION } = require("pg-error-constants");
+const { InvalidPropertyValueError } = require("../utils/Error.js");
 
 const DatabaseError = new Error();
 
@@ -60,7 +62,12 @@ const createRecipe = asyncHandler(async (req, res) => {
     );
     res.status(200).json(rows[0]);
   } catch (error) {
-    console.log(error);
+    if (error.code == INVALID_TEXT_REPRESENTATION) {
+      let invalidProperty = error.message.match(
+        /(?<=\binvalid input value for enum\s)(\w+)/
+      )[1];
+      throw new InvalidPropertyValueError(invalidProperty);
+    }
   }
 });
 
