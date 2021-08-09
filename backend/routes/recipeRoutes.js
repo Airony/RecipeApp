@@ -3,10 +3,15 @@ const router = express.Router();
 const {
   getRecipes,
   getRecipeById,
+  createRecipe,
 } = require("../controllers/recipeController");
-const { recipeValidator } = require("../middleware/validatorMiddleware");
+const { authOnly, authorOnly } = require("../middleware/authMiddleware");
+const { recipeValidator } = require("../middleware/validateMiddleware");
 
 router.route("/:id").get(getRecipeById);
-router.route("/").get(getRecipes).post(recipeValidator, createRecipe);
+router
+  .route("/")
+  .get(getRecipes)
+  .post(authOnly, authorOnly, recipeValidator, createRecipe);
 
 module.exports = router;
