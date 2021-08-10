@@ -1,7 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const pool = require("../config/db.js");
 const { INVALID_TEXT_REPRESENTATION } = require("pg-error-constants");
-const { InvalidPropertyValueError } = require("../utils/Error.js");
+const {
+  InvalidPropertyValueError,
+  ObjectNotFoundError,
+} = require("../utils/Error.js");
 
 const DatabaseError = new Error();
 
@@ -23,8 +26,7 @@ const getRecipeById = asyncHandler(async (req, res) => {
     [req.params.id]
   );
   if (rows.length == 0) {
-    res.status(404);
-    throw new Error("Recipe not found");
+    throw new ObjectNotFoundError("Recipe");
   }
   res.status(200).json(rows[0]);
 });

@@ -5,6 +5,7 @@ const {
   UNIQUE_VIOLATION,
   FOREIGN_KEY_VIOLATION,
 } = require("pg-error-constants");
+const { ObjectNotFoundError } = require("../utils/Error.js");
 
 //@desc    Fetch all users
 //@route    GET /api/users
@@ -84,7 +85,7 @@ const setAuthor = asyncHandler(async (req, res) => {
     switch (error.code) {
       case FOREIGN_KEY_VIOLATION:
         res.status(404);
-        throw new Error("User not found.");
+        throw new ObjectNotFoundError("User");
       case UNIQUE_VIOLATION:
         break;
       default:
@@ -105,7 +106,7 @@ const unsetAuthor = asyncHandler(async (req, res) => {
       [targetId]
     );
     if (rows.length == 0) {
-      throw new Error("User not found.");
+      throw new ObjectNotFoundError("User");
     }
   } catch (error) {
     throw error;
