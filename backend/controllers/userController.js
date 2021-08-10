@@ -94,4 +94,23 @@ const setAuthor = asyncHandler(async (req, res) => {
   res.status(204).end();
 });
 
-module.exports = { getUsers, addUser, authUser, setAuthor };
+//@desc    Unset user as an author
+//@route    POST /api/users/unsetAuthor
+//@access    Private/Admin
+const unsetAuthor = asyncHandler(async (req, res) => {
+  const targetId = req.body.userId;
+  try {
+    const { rows } = await pool.query(
+      'DELETE FROM "author" WHERE userId = $1 RETURNING userId',
+      [targetId]
+    );
+    if (rows.length == 0) {
+      throw new Error("User not found.");
+    }
+  } catch (error) {
+    throw error;
+  }
+  res.status(204).end();
+});
+
+module.exports = { getUsers, addUser, authUser, setAuthor, unsetAuthor };
