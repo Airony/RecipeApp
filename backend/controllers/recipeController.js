@@ -33,6 +33,11 @@ const getRecipeById = asyncHandler(async (req, res) => {
 //@access    Private/Author
 const createRecipe = asyncHandler(async (req, res) => {
   const userId = req.session.userId;
+  const image = req.file;
+  if (!image) {
+    res.status(400);
+    throw new Error("Missing image.");
+  }
   const {
     title,
     description,
@@ -41,7 +46,6 @@ const createRecipe = asyncHandler(async (req, res) => {
     ingredients,
     steps,
     notes,
-    image,
   } = req.body;
   try {
     const { rows } = await pool.query(
@@ -56,7 +60,7 @@ const createRecipe = asyncHandler(async (req, res) => {
         ingredients,
         steps,
         notes,
-        image,
+        image.path,
       ]
     );
     res.status(200).json(rows[0]);
@@ -67,6 +71,7 @@ const createRecipe = asyncHandler(async (req, res) => {
       )[1];
       throw new InvalidPropertyValueError(invalidProperty);
     }
+    throw error;
   }
 });
 
