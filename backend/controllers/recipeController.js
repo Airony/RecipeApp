@@ -6,22 +6,19 @@ const {
   ObjectNotFoundError,
 } = require("../utils/Error.js");
 
-const DatabaseError = new Error();
-
 //@desc    Fetch all recipes
 //@route    GET /api/recipes
-//access    public
+//@access    Public
 const getRecipes = asyncHandler(async (req, res) => {
-  console.log(req.params);
-  const { rows, fields } = await pool.query('SELECT * from "recipe";');
+  const { rows } = await pool.query('SELECT * from "recipe";');
   res.status(200).json(rows);
 });
 
 //@desc    Fetch recipe by id
 //@route    GET /api/recipes/:id
-//access    public
+//@access    Public
 const getRecipeById = asyncHandler(async (req, res) => {
-  const { rows, fields } = await pool.query(
+  const { rows } = await pool.query(
     'SELECT * from "recipe" WHERE recipeId = $1;',
     [req.params.id]
   );
@@ -33,7 +30,7 @@ const getRecipeById = asyncHandler(async (req, res) => {
 
 //@desc    Create Recipe
 //@route    POST /api/recipes/
-//access    Private/Author
+//@access    Private/Author
 const createRecipe = asyncHandler(async (req, res) => {
   const userId = req.session.userId;
   const {

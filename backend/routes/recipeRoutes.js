@@ -6,12 +6,15 @@ const {
   createRecipe,
 } = require("../controllers/recipeController");
 const { authOnly, authorOnly } = require("../middleware/authMiddleware");
-const { recipeValidator } = require("../middleware/validateMiddleware");
+const {
+  recipeValidationRules,
+  validate,
+} = require("../middleware/validateMiddleware");
 
 router.route("/:id").get(getRecipeById);
 router
   .route("/")
   .get(getRecipes)
-  .post(authOnly, authorOnly, recipeValidator, createRecipe);
+  .post(authOnly, authorOnly, recipeValidationRules(), validate, createRecipe);
 
 module.exports = router;
