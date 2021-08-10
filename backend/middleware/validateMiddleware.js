@@ -4,7 +4,7 @@ const {
   ValidationChain,
 } = require("express-validator");
 
-recipeValidator = [
+const recipeValidator = [
   body("title", "You must specify a title.").exists(),
   body("description", "You must specify a description.").exists(),
   body("difficulty", "You must specify a difficulty.").exists(),
@@ -20,4 +20,14 @@ recipeValidator = [
   },
 ];
 
-module.exports = { recipeValidator };
+const setAuthorValidator = [
+  body("userId").exists().isNumeric(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    next();
+  },
+];
+
+module.exports = { recipeValidator, setAuthorValidator };
