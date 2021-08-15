@@ -1,8 +1,14 @@
-import React, { Component } from "react";
+import PrimaryHeader from "./Components/PrimaryHeader";
 import "./app.scss";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const App = (props) => {
-  <h1>Hello World!</h1>;
+  return (
+    <Router>
+      <PrimaryHeader></PrimaryHeader>
+    </Router>
+  );
 };
 
 export default App;
