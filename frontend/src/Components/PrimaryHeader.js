@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "../styles/primaryHeader.scss";
 
 const PrimaryHeader = (props) => {
   const [navOpen, setNavOpen] = useState(false);

@@ -1,0 +1,126 @@
+$secondary-header-height: 10vh;
+
+.secondary-header {
+  height: $secondary-header-height;
+  background: $primary-color;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.search-bar {
+  $size: 30px;
+  background: $secondary-color;
+  display: flex;
+  height: $size;
+  width: $size;
+  border-radius: 5px;
+  position: relative;
+  padding: 3px;
+  overflow: hidden;
+  transition: width 450ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 300ms linear;
+  flex-shrink: 0;
+
+  input {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0.25rem 0.75rem;
+    font-size: 1rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 2;
+    line-height: $size;
+    opacity: 0;
+    width: 100%;
+    flex-grow: 1;
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+
+  button {
+    border-radius: 5px;
+    width: $size;
+    height: $size;
+    margin-left: auto;
+    transition: background 250ms ease-in;
+
+    svg {
+      display: inline-block;
+      margin: auto;
+      vertical-align: middle;
+      path {
+        transition: fill 250ms ease-in;
+      }
+    }
+    &:focus,
+    &:hover {
+      background: $text-medium;
+      & svg path {
+        fill: white;
+      }
+    }
+  }
+
+  &:focus-within {
+    width: 250px;
+    box-shadow: 2px 3px 3px 3px rgba(0, 0, 0, 0.35);
+
+    input {
+      opacity: 1;
+      width: calc(100% - #{$size});
+    }
+  }
+}
+
+.category-nav {
+  margin-left: clamp(1rem, 5vw, 3rem);
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  align-items: center;
+
+  .navitem {
+    width: auto;
+    width: fit-content;
+    white-space: nowrap;
+    color: $text-white;
+    text-decoration: none;
+    font-family: "Bodoni Moda", sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.75rem, 5vw, 1.25rem);
+    height: 100%;
+    padding: 0 0.5rem;
+    line-height: $secondary-header-height;
+    transition: background 300ms ease-in;
+    &:hover {
+      background: #ac956c;
+    }
+    &:focus {
+      border-right: 2px solid $secondary-color;
+      border-left: 2px solid $secondary-color;
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .search-bar {
+    width: 300px;
+    &:focus-within {
+      width: 300px;
+    }
+    input {
+      opacity: 1;
+    }
+  }
+}

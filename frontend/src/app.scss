@@ -60,9 +60,10 @@ header {
     font-size: 1.5rem;
     color: $text-medium;
     text-decoration: none;
+    padding: 1rem 0;
+
     font-weight: 300;
     opacity: 0;
-    padding: 1.5rem 0;
     width: 100%;
     text-align: center;
     border-bottom: 2px solid rgba($color: black, $alpha: 0.1);
@@ -180,8 +181,7 @@ button {
   align-items: center;
   justify-content: flex-start;
   &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
+    display: none;
   }
 }
 
@@ -203,14 +203,20 @@ button {
     background: none;
     border: none;
     outline: none;
-    padding-left: 0.75rem;
+    padding: 0.25rem 0.75rem;
     font-size: 1rem;
     position: absolute;
     left: 0;
     bottom: 0;
     top: 0;
+    z-index: 2;
     line-height: $size;
     opacity: 0;
+    width: 100%;
+    flex-grow: 1;
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
   }
 
   button {
@@ -228,7 +234,8 @@ button {
         transition: fill 250ms ease-in;
       }
     }
-    &:focus {
+    &:focus,
+    &:hover {
       background: $text-medium;
       & svg path {
         fill: white;
@@ -242,11 +249,7 @@ button {
 
     input {
       opacity: 1;
-    }
-    button {
-      img {
-        color: white;
-      }
+      width: calc(100% - #{$size});
     }
   }
 }
@@ -298,6 +301,7 @@ button {
       border: none;
       position: relative;
       top: unset;
+      padding: 0;
 
       &::after {
         position: absolute;

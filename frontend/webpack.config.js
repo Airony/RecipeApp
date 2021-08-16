@@ -14,7 +14,18 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: [__dirname + "\\src\\styles\\_variables.scss"],
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
