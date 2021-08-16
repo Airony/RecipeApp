@@ -10,7 +10,7 @@ const PrimaryHeader = (props) => {
   };
 
   return (
-    <header>
+    <header className="primary-header">
       <button
         onClick={handleHamburgerClick}
         aria-expanded={navOpen}
@@ -28,7 +28,7 @@ const PrimaryHeader = (props) => {
       </button>
       <nav
         role="navigation"
-        className={navOpen ? "nav-open" : ""}
+        className={"main-nav " + (navOpen ? "nav-open" : "")}
         aria-hidden={!navOpen}
       >
         <Link to="/" className="navitem">
