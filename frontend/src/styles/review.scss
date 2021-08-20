@@ -1,0 +1,40 @@
+.review-container {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px black solid;
+}
+
+.review-info {
+  h5 {
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.review-ratings-container {
+  margin: 0.5rem 0 1rem 0;
+  button {
+    width: 16px;
+    height: 16px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+  }
+  p {
+    color: black;
+    display: inline-block;
+    margin-left: 1rem;
+  }
+}
+
+.upvote-review {
+  transform: rotate(-135deg);
+}
+.downvote-review {
+  margin-left: 1rem;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.review-container:last-child {
+  border: none;
+}

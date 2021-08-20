@@ -3,14 +3,24 @@ const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/index.js",
-  //   mode: "development",
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower-components)/,
         loader: "babel-loader",
-        options: { presets: ["@babel/env"] },
+        options: {
+          presets: [
+            [
+              "@babel/env",
+              {
+                useBuiltIns: "usage",
+                corejs: 3,
+              },
+            ],
+            "@babel/react",
+          ],
+        },
       },
       {
         test: /\.s[ac]ss$/i,
@@ -33,17 +43,21 @@ module.exports = {
       },
     ],
   },
-  resolve: { extensions: ["*", ".js", ".jsx"] },
+  resolve: {
+    extensions: ["*", ".js", ".jsx"],
+  },
   output: {
     path: path.join(__dirname, "dist/"),
-    publicPath: "dist/",
+    publicPath: "/",
     filename: "bundle.js",
   },
   devServer: {
+    historyApiFallback: true,
     contentBase: path.join(__dirname, "public/"),
     port: 5000,
     publicPath: "http://localhost:5000/dist/",
     hot: true,
+    proxy: { "/api/**": { target: "http://localhost:8000", secure: false } },
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
 };

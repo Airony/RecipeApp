@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +5,6 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  overflow: hidden;
 }
 
 header {
@@ -15,11 +13,67 @@ header {
   z-index: 100;
 }
 
+h1 {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-family: "Bodoni Moda", sans-serif;
+  color: $primary-color;
+  margin: 1.25rem 0;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
+  font-family: "Bodoni Moda", sans-serif;
+  color: $primary-color;
+  margin: 1rem 0;
+}
+
+h4 {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  margin: 0.5rem 0;
+}
+
+h5 {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+h6 {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+p {
+  color: $text-medium;
+  margin-bottom: 0.5rem;
+  .body-big {
+    font-weight: 600;
+  }
+}
+
+.text-button {
+  color: $primary-color;
+  text-decoration: underline;
+  font-family: "Bodoni Moda", sans-serif;
+  font-weight: 800;
+  &:hover {
+    font-style: italic;
+  }
+  &:focus {
+    outline: 1px black solid;
+  }
+}
+
 a:focus,
 button:focus {
   outline: none;
 }
+input {
+  outline: none;
+  border: none;
+}
 
+input[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 button {
   outline: none;
   border: none;
@@ -41,4 +95,10 @@ button {
       outline: 2px black solid;
     }
   }
+}
+
+.responsive-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
