@@ -43,20 +43,24 @@ const createRecipe = asyncHandler(async (req, res) => {
     description,
     difficulty,
     category,
+    cookTime,
+    prepTime,
     ingredients,
     steps,
     notes,
   } = req.body;
   try {
     const { rows } = await pool.query(
-      `INSERT INTO "recipe"(userId,title,description,recipe_difficulty,recipe_category,ingredients,steps,notes,image) 
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      `INSERT INTO "recipe"(userId,title,description,recipe_difficulty,recipe_category,cook_time,prep_time,ingredients,steps,notes,image) 
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
       [
         userId,
         title,
         description,
         difficulty,
         category,
+        cookTime,
+        prepTime,
         ingredients,
         steps,
         notes,

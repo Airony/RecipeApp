@@ -10,6 +10,12 @@ recipeValidationRules = () => {
     body("description", "You must specify a description.").exists(),
     body("difficulty", "You must specify a difficulty.").exists(),
     body("category", "You must specify a category.").exists(),
+    body("prepTime", "You must specify preptime in minutes.")
+      .exists()
+      .isNumeric(),
+    body("cookTime", "You must specify cooktime in minutes.")
+      .exists()
+      .isNumeric(),
     body("ingredients", "You must include an array of ingredients.").isArray(),
     body("steps", "You must include an array of steps.").isArray(),
   ];

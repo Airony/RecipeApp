@@ -19,6 +19,8 @@ CREATE TABLE "recipe"(
     description VARCHAR(500) NOT NULL,
     recipe_difficulty difficulty NOT NULL,
     recipe_category category NOT NULL,
+    prep_time SMALLINT NOT NULL,
+    cook_time SMALLINT NOT NULL,
     ingredients VARCHAR(100)[] NOT NULL,
     steps VARCHAR(300)[] NOT NULL,
     notes TEXT NOT NULL,
