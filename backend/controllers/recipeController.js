@@ -18,14 +18,23 @@ const getRecipes = asyncHandler(async (req, res) => {
 //@route    GET /api/recipes/:id
 //@access    Public
 const getRecipeById = asyncHandler(async (req, res) => {
-  const { rows } = await pool.query(
+  const { rows: recipeRows } = await pool.query(
     'SELECT * from "recipe" WHERE recipeId = $1;',
     [req.params.id]
   );
-  if (rows.length == 0) {
+  if (recipeRows.length == 0) {
     throw new ObjectNotFoundError("Recipe");
   }
-  res.status(200).json(rows[0]);
+
+  const authorId = recipeRows[0].userid;
+  const { rows: userRows } = await pool.query(
+    'SELECT full_name from "user" WHERE userId = $1;',
+    [authorId]
+  );
+
+  authorName = userRows[0]["full_name"];
+
+  res.status(200).json({ ...recipeRows[0], authorName: authorName });
 });
 
 //@desc    Create Recipe
