@@ -3,6 +3,7 @@ const {
   validationResult,
   ValidationChain,
 } = require("express-validator");
+const { InvalidPropertyValueError } = require("../utils/Error");
 
 recipeValidationRules = () => {
   return [
@@ -26,9 +27,11 @@ const userIdValidationRules = () => {
 };
 
 const validate = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
+  const validationObj = validationResult(req);
+  if (!validationObj.isEmpty()) {
+    const errorMsg = validationObj.errors[0].msg;
+    throw new InvalidPropertyValueError(errorMsg);
+  }
   next();
 };
 
