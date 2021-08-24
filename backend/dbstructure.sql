@@ -3,7 +3,7 @@ CREATE TYPE category AS ENUM ('Appeteizer','Main Course','Dessert','Drink');
 
 
 CREATE TABLE "user"(
-    userId SERIAL PRIMARY KEY NOT NULL,
+    user_id SERIAL PRIMARY KEY NOT NULL,
     full_name VARCHAR(50) NOT NULL,
     profile_picture TEXT,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -12,8 +12,8 @@ CREATE TABLE "user"(
 );
 
 CREATE TABLE "recipe"(
-    recipeId SERIAL PRIMARY KEY NOT NULL,
-    userId INT NOT NULL references "user"(userId) ON DELETE CASCADE,
+    recipe_id SERIAL PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE,
     title VARCHAR(25) NOT NULL,
     avg_rating SMALLINT DEFAULT 0,
     description VARCHAR(500) NOT NULL,
@@ -29,20 +29,20 @@ CREATE TABLE "recipe"(
 );
 
 CREATE TABLE "comment"(
-    commentId SERIAL PRIMARY KEY NOT NULL,
-    userId INT NOT NULL references "user"(userId) ON DELETE CASCADE,
-    recipeId INT NOT NULL references "recipe"(recipeId) ON DELETE CASCADE,
+    comment_id SERIAL PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE,
+    recipe_id INT NOT NULL references "recipe"(recipe_id) ON DELETE CASCADE,
     content TEXT NOT NULL,
     points INT NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "admin"(
-    userId INT NOT NULL references "user"(userId) ON DELETE CASCADE
+    user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE "author"(
-    userId INT NOT NULL references "user"(userId) ON DELETE CASCADE
+    user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE
 );
 
 

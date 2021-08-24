@@ -12,7 +12,7 @@ const { ObjectNotFoundError } = require("../utils/Error.js");
 //@access    Public
 const getUsers = asyncHandler(async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT userId, full_name from "user";');
+    const { rows } = await pool.query('SELECT user_id, full_name from "user";');
     res.status(200).json(rows);
   } catch (error) {
     throw error;
@@ -44,7 +44,7 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   try {
     const { rows } = await pool.query(
-      'SELECT userId,password FROM "user" WHERE email = $1',
+      'SELECT user_id,password FROM "user" WHERE email = $1',
       [email]
     );
 
@@ -74,7 +74,7 @@ const authUser = asyncHandler(async (req, res) => {
 const setAuthor = asyncHandler(async (req, res) => {
   const targetId = req.body.userId;
   try {
-    await pool.query('INSERT INTO "author"(userId) VALUES($1)', [targetId]);
+    await pool.query('INSERT INTO "author"(user_id) VALUES($1)', [targetId]);
   } catch (error) {
     switch (error.code) {
       case FOREIGN_KEY_VIOLATION:
@@ -96,7 +96,7 @@ const unsetAuthor = asyncHandler(async (req, res) => {
   const targetId = req.body.userId;
   try {
     const { rows } = await pool.query(
-      'DELETE FROM "author" WHERE userId = $1 RETURNING userId',
+      'DELETE FROM "author" WHERE user_id = $1 RETURNING user_id',
       [targetId]
     );
     if (rows.length == 0) {

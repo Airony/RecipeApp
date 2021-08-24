@@ -13,7 +13,7 @@ const authorOnly = asyncHandler(async (req, res, next) => {
   const userId = req.session.userId;
 
   const { rows } = await pool.query(
-    `SELECT * FROM "author" WHERE userId = $1;`,
+    `SELECT * FROM "author" WHERE user_id = $1;`,
     [userId]
   );
 
@@ -29,7 +29,7 @@ const adminOnly = asyncHandler(async (req, res, next) => {
   const userId = req.session.userId;
 
   const { rows } = await pool.query(
-    `SELECT * FROM "admin" WHERE userId = $1;`,
+    `SELECT * FROM "admin" WHERE user_id = $1;`,
     [userId]
   );
 

@@ -19,22 +19,23 @@ const getRecipes = asyncHandler(async (req, res) => {
 //@access    Public
 const getRecipeById = asyncHandler(async (req, res) => {
   const { rows: recipeRows } = await pool.query(
-    'SELECT * from "recipe" WHERE recipeId = $1;',
+    'SELECT * from "recipe" WHERE recipe_id = $1;',
     [req.params.id]
   );
   if (recipeRows.length == 0) {
     throw new ObjectNotFoundError("Recipe");
   }
 
-  const authorId = recipeRows[0].userid;
+  const authorId = recipeRows[0]["user_id"];
+
   const { rows: userRows } = await pool.query(
-    'SELECT full_name from "user" WHERE userId = $1;',
+    'SELECT full_name from "user" WHERE user_id = $1;',
     [authorId]
   );
 
   authorName = userRows[0]["full_name"];
 
-  res.status(200).json({ ...recipeRows[0], authorName: authorName });
+  res.status(200).json({ ...recipeRows[0], author_name: authorName });
 });
 
 //@desc    Create Recipe
@@ -60,7 +61,7 @@ const createRecipe = asyncHandler(async (req, res) => {
   } = req.body;
   try {
     const { rows } = await pool.query(
-      `INSERT INTO "recipe"(userId,title,description,recipe_difficulty,recipe_category,cook_time,prep_time,ingredients,steps,notes,image) 
+      `INSERT INTO "recipe"(user_id,title,description,recipe_difficulty,recipe_category,cook_time,prep_time,ingredients,steps,notes,image) 
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
       [
         userId,
