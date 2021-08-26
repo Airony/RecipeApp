@@ -26,6 +26,13 @@ const userIdValidationRules = () => {
   return [body("userId").isNumeric()];
 };
 
+commentValidationrules = () => {
+  return [
+    body("comment").exists().isLength({ max: 1000 }).bail(),
+    body("recipeId").isNumeric().bail(),
+  ];
+};
+
 const validate = (req, res, next) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
@@ -35,4 +42,9 @@ const validate = (req, res, next) => {
   next();
 };
 
-module.exports = { recipeValidationRules, userIdValidationRules, validate };
+module.exports = {
+  recipeValidationRules,
+  userIdValidationRules,
+  validate,
+  commentValidationrules,
+};

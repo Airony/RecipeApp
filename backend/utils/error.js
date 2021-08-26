@@ -12,4 +12,17 @@ class ObjectNotFoundError extends Error {
   }
 }
 
-module.exports = { InvalidPropertyValueError, ObjectNotFoundError };
+class ForeignKeyError extends Error {
+  constructor(error) {
+    super(error);
+    this.constraint = error.constraint;
+    this.table = error.table;
+    this.name = "ForeignKeyError";
+  }
+}
+
+module.exports = {
+  InvalidPropertyValueError,
+  ObjectNotFoundError,
+  ForeignKeyError,
+};

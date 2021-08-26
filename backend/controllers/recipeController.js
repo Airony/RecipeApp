@@ -4,6 +4,7 @@ const { INVALID_TEXT_REPRESENTATION } = require("pg-error-constants");
 const {
   InvalidPropertyValueError,
   ObjectNotFoundError,
+  ForeignKeyError,
 } = require("../utils/Error.js");
 
 //@desc    Fetch all recipes
@@ -89,4 +90,28 @@ const createRecipe = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getRecipes, getRecipeById, createRecipe };
+//@desc    Post comment
+//@route    POST /api/comments/
+//@access    Private/Auth
+const createComment = asyncHandler(async (req, res) => {
+  const { comment, recipeId } = req.body;
+  const userId = req.session.userId;
+  console.log(userId);
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO "comment"(user_id,recipe_id,content) VALUES($1,$2,$3) RETURNING comment_id,content',
+      [userId, recipeId, comment]
+    );
+    console.log(rows);
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    switch (error.code) {
+      case "23503":
+        throw new ForeignKeyError(error);
+      default:
+        throw error;
+    }
+  }
+});
+
+module.exports = { getRecipes, getRecipeById, createRecipe, createComment };
