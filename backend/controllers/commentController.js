@@ -92,4 +92,28 @@ const updateComment = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createComment, deleteComment, updateComment };
+//@desc    Get comment by id
+//@route    PUT /api/comments/:id
+//@access    Public
+const getCommentById = asyncHandler(async (req, res) => {
+  const commentId = req.params.id;
+  try {
+    const { rows: commentRows } = await pool.query(
+      `SELECT comment_id, content FROM "comment" WHERE comment_id = $1`,
+      [commentId]
+    );
+    if (commentRows.length == 0) {
+      throw new ObjectNotFoundError("Comment");
+    }
+    res.status(200).json(commentRows[0]);
+  } catch (error) {
+    throw error;
+  }
+});
+
+module.exports = {
+  createComment,
+  deleteComment,
+  updateComment,
+  getCommentById,
+};

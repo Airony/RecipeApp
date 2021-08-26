@@ -4,6 +4,7 @@ const {
   createComment,
   deleteComment,
   updateComment,
+  getCommentById,
 } = require("../controllers/commentController");
 const { authOnly, softAdminCheck } = require("../middleware/authMiddleware");
 const {
@@ -18,6 +19,7 @@ router
 
 router
   .route("/:id")
+  .get(getCommentById)
   .delete(authOnly, softAdminCheck, deleteComment)
   .put(
     authOnly,
