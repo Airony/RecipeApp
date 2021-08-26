@@ -29,8 +29,8 @@ const userIdValidationRules = () => {
 const validate = (req, res, next) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
-    const errorMsg = validationObj.errors[0].msg;
-    throw new InvalidPropertyValueError(errorMsg);
+    const invalidParam = validationObj.errors[0].param;
+    throw new InvalidPropertyValueError(invalidParam);
   }
   next();
 };
