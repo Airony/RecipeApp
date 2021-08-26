@@ -11,32 +11,38 @@ const {
 //@route    GET /api/recipes
 //@access    Public
 const getRecipes = asyncHandler(async (req, res) => {
-  const { rows } = await pool.query('SELECT * from "recipe";');
-  res.status(200).json(rows);
+  try {
+    const { rows } = await pool.query('SELECT * from "recipe";');
+    res.status(200).json(rows);
+  } catch (error) {
+    throw error;
+  }
 });
 
 //@desc    Fetch recipe by id
 //@route    GET /api/recipes/:id
 //@access    Public
 const getRecipeById = asyncHandler(async (req, res) => {
-  const { rows: recipeRows } = await pool.query(
-    'SELECT * from "recipe" WHERE recipe_id = $1;',
-    [req.params.id]
-  );
-  if (recipeRows.length == 0) {
-    throw new ObjectNotFoundError("Recipe");
-  }
+  try {
+    const { rows: recipeRows } = await pool.query(
+      'SELECT * from "recipe" WHERE recipe_id = $1;',
+      [req.params.id]
+    );
+    if (recipeRows.length == 0) {
+      throw new ObjectNotFoundError("Recipe");
+    }
 
-  const authorId = recipeRows[0]["user_id"];
+    const authorId = recipeRows[0]["user_id"];
 
-  const { rows: userRows } = await pool.query(
-    'SELECT full_name from "user" WHERE user_id = $1;',
-    [authorId]
-  );
+    const { rows: userRows } = await pool.query(
+      'SELECT full_name from "user" WHERE user_id = $1;',
+      [authorId]
+    );
 
-  authorName = userRows[0]["full_name"];
+    authorName = userRows[0]["full_name"];
 
-  res.status(200).json({ ...recipeRows[0], author_name: authorName });
+    res.status(200).json({ ...recipeRows[0], author_name: authorName });
+  } catch (error) {}
 });
 
 //@desc    Create Recipe

@@ -11,34 +11,39 @@ const authOnly = (req, res, next) => {
 
 const authorOnly = asyncHandler(async (req, res, next) => {
   const userId = req.session.userId;
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM "author" WHERE user_id = $1;`,
+      [userId]
+    );
 
-  const { rows } = await pool.query(
-    `SELECT * FROM "author" WHERE user_id = $1;`,
-    [userId]
-  );
-
-  if (rows.length == 0) {
-    res.status(403);
-    throw new Error("Only authors can post recipes");
+    if (rows.length == 0) {
+      res.status(403);
+      throw new Error("Only authors can post recipes");
+    }
+    next();
+  } catch (error) {
+    throw error;
   }
-
-  next();
 });
 
 const adminOnly = asyncHandler(async (req, res, next) => {
   const userId = req.session.userId;
 
-  const { rows } = await pool.query(
-    `SELECT * FROM "admin" WHERE user_id = $1;`,
-    [userId]
-  );
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM "admin" WHERE user_id = $1;`,
+      [userId]
+    );
 
-  if (rows.length == 0) {
-    res.status(403);
-    throw new Error("Only admins can do that.");
+    if (rows.length == 0) {
+      res.status(403);
+      throw new Error("Only admins can do that.");
+    }
+    next();
+  } catch (error) {
+    throw error;
   }
-
-  next();
 });
 
 module.exports = { authOnly, authorOnly, adminOnly };
