@@ -4,6 +4,7 @@ const { resolve } = require("path");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const userRoutes = require("./routes/userRoutes.js");
 const recipeRoutes = require("./routes/recipeRoutes.js");
+const commentRoutes = require("./routes/commentRoutes.js");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./config/db");
@@ -57,6 +58,7 @@ app.get(
 
 app.use("/api/users", userRoutes);
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/comments", commentRoutes);
 
 // Static files
 app.use("/uploads", express.static("uploads"));
