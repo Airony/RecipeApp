@@ -1,7 +1,7 @@
 $secondary-header-height: 10vh;
 
 .container {
-  height: $secondary-header-height;
+  padding-top: $primary-header-height;
   background: $primary-color;
   overflow-x: auto;
   overflow-y: hidden;
@@ -101,8 +101,7 @@ $secondary-header-height: 10vh;
   font-weight: 600;
   font-size: clamp(0.75rem, 5vw, 1.25rem);
   height: 100%;
-  padding: 0 0.5rem;
-  line-height: $secondary-header-height;
+  padding: 1rem 0.5rem;
   transition: background 300ms ease-in;
   &:hover {
     background: #ac956c;

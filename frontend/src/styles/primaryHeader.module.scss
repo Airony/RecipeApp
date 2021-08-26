@@ -44,7 +44,7 @@ $nav-animation-duration: 500ms;
 }
 
 .container {
-  position: relative;
+  position: fixed;
   height: $primary-header-height;
   width: 100%;
   background: $secondary-color;
@@ -67,7 +67,7 @@ $nav-animation-duration: 500ms;
   top: 100%;
   transform: translateX(-100%);
   z-index: 20;
-  height: 100vh - $primary-header-height;
+  height: 100vh;
   overflow-y: auto;
   width: 100%;
   background: $secondary-variant;
@@ -99,7 +99,7 @@ $nav-animation-duration: 500ms;
   }
 }
 
-.nav-open {
+.navOpen {
   transform: translateX(0%);
   .navItem {
     opacity: 1;
@@ -116,7 +116,7 @@ $nav-animation-duration: 500ms;
     clip-path: circle(0px at top left);
     transition: clip-path $nav-animation-duration ease-in-out;
   }
-  .nav-open {
+  .navOpen {
     clip-path: circle(150% at top left);
   }
 }
