@@ -1,9 +1,9 @@
-.review-container {
+.container {
   margin-bottom: 0.5rem;
   border-bottom: 1px black solid;
 }
 
-.review-info {
+.info {
   h5 {
     text-transform: uppercase;
     display: inline-block;
@@ -11,7 +11,7 @@
   }
 }
 
-.review-ratings-container {
+.ratingsContainer {
   margin: 0.5rem 0 1rem 0;
   button {
     width: 16px;
@@ -27,14 +27,14 @@
   }
 }
 
-.upvote-review {
+.upvote {
   transform: rotate(-135deg);
 }
-.downvote-review {
+.downvote {
   margin-left: 1rem;
   transform: translateY(-50%) rotate(45deg);
 }
 
-.review-container:last-child {
+.container:last-child {
   border: none;
 }

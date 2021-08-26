@@ -48,7 +48,7 @@ p {
   }
 }
 
-.text-button {
+.textButton {
   color: $primary-color;
   text-decoration: underline;
   font-family: "Bodoni Moda", sans-serif;
@@ -87,7 +87,7 @@ button {
   border-radius: 5px;
   font-weight: 400;
 
-  &-primary {
+  &Primary {
     background: $primary-color;
     color: $text-white;
     transition: color 300ms linear, background 300ms linear;
@@ -97,7 +97,7 @@ button {
   }
 }
 
-.responsive-img {
+.responsiveImg {
   height: 100%;
   width: 100%;
   object-fit: cover;

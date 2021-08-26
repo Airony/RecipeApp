@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./styles/sharedStyles.scss";
 import PrimaryHeader from "./Components/PrimaryHeader";
 import SecondaryHeader from "./Components/SecondaryHeader";
 import RecipeScreen from "./Screens/RecipeScreen";

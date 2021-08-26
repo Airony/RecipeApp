@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useReducer } from "react";
 import { useParams } from "react-router";
 import Review from "../Components/Review";
 import TextArea from "../Components/TextArea";
-import "../styles/recipeScreen.scss";
+import sharedStyles from "../styles/sharedStyles.module.scss";
+import styles from "../styles/recipeScreen.module.scss";
 
 const recipeReducer = (state, action) => {
   switch (action.type) {
@@ -51,73 +52,75 @@ const RecipeScreen = (props) => {
             : "Server error, please try again later."}
         </p>
       ) : (
-        <article className="recipe-screen-container">
-          <section className="recipe-info">
-            <div className="info-container">
-              <h1 className="recipe-title">{recipe.data.title}</h1>
-              <div className="recipe-author">
+        <article className={styles.container}>
+          <section className={styles.info}>
+            <div className={styles.infoContainer}>
+              <h1 className={styles.title}>{recipe.data.title}</h1>
+              <div className={styles.author}>
                 <span>By </span>
-                <a className="text-button" href="#">
+                <a className={sharedStyles.textButton} href="#">
                   {recipe.data["author_name"]}
                 </a>
               </div>
-              <h6 className="recipe-post-date">August 1st, 2021</h6>
-              <div className="additional-properties">
-                <div className="property">
-                  <h4 className="property-title">Difficulty: </h4>
-                  <h4 className="property-value">
+              <h6 className={styles.postDate}>August 1st, 2021</h6>
+              <div className={styles.additionalProperties}>
+                <div className={styles.property}>
+                  <h4 className={styles.propertyTitle}>Difficulty: </h4>
+                  <h4 className={styles.propertyValue}>
                     {recipe.data["recipe_difficulty"]}
                   </h4>
                 </div>
-                <div className="property">
-                  <h4 className="property-title">Preptime: </h4>
-                  <h4 className="property-value">
+                <div className={styles.property}>
+                  <h4 className={styles.propertyTitle}>Preptime: </h4>
+                  <h4 className={styles.propertyValue}>
                     {recipe.data["prep_time"] + "m"}
                   </h4>
                 </div>
-                <div className="property">
-                  <h4 className="property-title">Servings: </h4>
-                  <h4 className="property-value">5 - 6</h4>
+                <div className={styles.property}>
+                  <h4 className={styles.propertyTitle}>Servings: </h4>
+                  <h4 className={styles.propertyValue}>5 - 6</h4>
                 </div>
-                <div className="property">
-                  <h4 className="property-title">Cooktime: </h4>
-                  <h4 className="property-value">
+                <div className={styles.property}>
+                  <h4 className={styles.propertyTitle}>Cooktime: </h4>
+                  <h4 className={styles.propertyValue}>
                     {recipe.data["cook_time"] + "m"}
                   </h4>
                 </div>
               </div>
             </div>
-            <div className="recipe-img-container">
+            <div className={styles.imgContainer}>
               <img
                 src={`\\${recipe.data.image}`}
                 alt=""
-                className="responsive-img"
+                className={sharedStyles.responsiveImg}
               />
             </div>
           </section>
-          <section className="recipe-data">
-            <section className="recipe-description">
+          <section className={styles.data}>
+            <section className={styles.description}>
               <p className="body-big">{recipe.data.description}</p>
             </section>
-            <section className="recipe-instructions">
-              <section className="ingredients">
+            <section>
+              <section className={styles.ingredients}>
                 <h2>Ingredients</h2>
                 <hr></hr>
                 {recipe.data.ingredients.map((value, index) => {
                   return (
                     <p key={index}>
-                      <span className="ingredient-index">{index + 1}/</span>
+                      <span className={styles.ingredientIndex}>
+                        {index + 1}/
+                      </span>
                       {value}
                     </p>
                   );
                 })}
               </section>
-              <section className="preparation">
+              <section>
                 <h2>Preparation</h2>
                 <hr></hr>
                 {recipe.data.steps.map((value, index) => {
                   return (
-                    <div className="step" key={index}>
+                    <div key={index}>
                       <h4>Step {index + 1}</h4>
                       <p>{value}</p>
                     </div>
@@ -126,17 +129,17 @@ const RecipeScreen = (props) => {
                 <hr></hr>
               </section>
             </section>
-            <section className="write-review">
+            <section>
               <h4>Write a review</h4>
               <TextArea
                 placeholder="Write your review"
                 maxLength={1000}
               ></TextArea>
             </section>
-            <section className="reviews">
+            <section>
               <h2>Reviews (2)</h2>
               <hr></hr>
-              <div className="reviews-container">
+              <div>
                 <Review></Review>
                 <Review></Review>
               </div>

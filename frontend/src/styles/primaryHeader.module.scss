@@ -1,7 +1,7 @@
 $primary-header-height: 10vh;
 $nav-animation-duration: 500ms;
 
-.menu-toggle {
+.menuToggle {
   padding: 0.5rem;
   display: block;
   transition: transform 300ms ease-out;
@@ -30,7 +30,7 @@ $nav-animation-duration: 500ms;
   margin: 5px 0px;
 }
 
-.hamburger-open .line {
+.hamburgerOpen .line {
   &:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
@@ -43,7 +43,7 @@ $nav-animation-duration: 500ms;
   }
 }
 
-.primary-header {
+.container {
   position: relative;
   height: $primary-header-height;
   width: 100%;
@@ -61,7 +61,7 @@ $nav-animation-duration: 500ms;
   margin: 0;
 }
 
-.main-nav {
+.nav {
   position: absolute;
   left: 0;
   top: 100%;
@@ -76,42 +76,42 @@ $nav-animation-duration: 500ms;
   align-items: center;
   justify-items: flex-start;
   transition: transform $nav-animation-duration ease;
-  .navitem {
-    font-size: 1.5rem;
-    color: $text-medium;
-    text-decoration: none;
-    padding: 1rem 0;
+}
 
-    font-weight: 300;
-    opacity: 0;
-    width: 100%;
-    text-align: center;
-    border-bottom: 2px solid rgba($color: black, $alpha: 0.1);
-    transition: background 200ms ease-in, color 200ms ease-in,
-      opacity 300ms ease-in $nav-animation-duration;
-    &:hover {
-      background: $primary-color;
-      color: $text-white;
-    }
-    &:focus {
-      border: 2px solid $primary-color;
-    }
+.navItem {
+  font-size: 1.5rem;
+  color: $text-medium;
+  text-decoration: none;
+  padding: 1rem 0;
+  font-weight: 300;
+  opacity: 0;
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid rgba($color: black, $alpha: 0.1);
+  transition: background 200ms ease-in, color 200ms ease-in,
+    opacity 300ms ease-in $nav-animation-duration;
+  &:hover {
+    background: $primary-color;
+    color: $text-white;
+  }
+  &:focus {
+    border: 2px solid $primary-color;
   }
 }
 
 .nav-open {
   transform: translateX(0%);
-  .navitem {
+  .navItem {
     opacity: 1;
   }
 }
 
-.login-button {
+.loginButton {
   font-size: clamp(1rem, 3vw, 1.3rem);
 }
 
 @supports (clip-path: circle()) {
-  .main-nav {
+  .nav {
     transform: none;
     clip-path: circle(0px at top left);
     transition: clip-path $nav-animation-duration ease-in-out;
@@ -122,7 +122,7 @@ $nav-animation-duration: 500ms;
 }
 
 @media screen and (min-width: 800px) {
-  .main-nav {
+  .nav {
     position: initial;
     transform: none;
     flex-direction: row;
@@ -133,30 +133,29 @@ $nav-animation-duration: 500ms;
     order: 2;
     clip-path: none;
     overflow: unset;
-    .navitem {
-      opacity: 1;
-      border: none;
-      position: relative;
-      top: unset;
-      padding: 0;
-
+  }
+  .navItem {
+    opacity: 1;
+    border: none;
+    position: relative;
+    top: unset;
+    padding: 0;
+    &::after {
+      position: absolute;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 100%;
+      border-bottom: 2px black solid;
+      transform-origin: center;
+      transform: scaleX(0%);
+      transition: transform 250ms ease-in, color 250ms ease-in;
+    }
+    &:hover {
+      background: none;
+      color: black;
       &::after {
-        position: absolute;
-        left: 0;
-        content: "";
-        width: 100%;
-        height: 100%;
-        border-bottom: 2px black solid;
-        transform-origin: center;
-        transform: scaleX(0%);
-        transition: transform 250ms ease-in, color 250ms ease-in;
-      }
-      &:hover {
-        background: none;
-        color: black;
-        &::after {
-          transform: scaleX(100%);
-        }
+        transform: scaleX(100%);
       }
     }
   }
@@ -164,13 +163,13 @@ $nav-animation-duration: 500ms;
   .logo {
     order: 1;
   }
-  .login-button {
+  .loginButton {
     order: 3;
   }
-  .navitem {
+  .navItem {
     padding: 0;
   }
-  .menu-toggle {
+  .menuToggle {
     display: none;
   }
 }

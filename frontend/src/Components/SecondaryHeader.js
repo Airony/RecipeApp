@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/secondaryHeader.scss";
+import styles from "../styles/secondaryHeader.module.scss";
 
 const SecondaryHeader = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,8 +12,8 @@ const SecondaryHeader = () => {
     //TODO : Add search functionality
   };
   return (
-    <header className="secondary-header">
-      <form className="search-bar">
+    <header className={styles.container}>
+      <form className={styles.searchBar}>
         <input
           type="search"
           placeholder="Search"
@@ -21,7 +21,7 @@ const SecondaryHeader = () => {
           onChange={HandleSearchCahnge}
           aria-label="Search for recipe"
         ></input>
-        <button className="search-button" aria-label="Submit search">
+        <button aria-label="Submit search">
           <svg
             width="20"
             height="20"
@@ -37,12 +37,12 @@ const SecondaryHeader = () => {
           </svg>
         </button>
       </form>
-      <nav className="category-nav">
-        <Link className="navitem">Fullcourse</Link>
-        <Link className="navitem">Appeteizer</Link>
-        <Link className="navitem">Main Course</Link>
-        <Link className="navitem">ِDessert</Link>
-        <Link className="navitem">Drinks</Link>
+      <nav className={styles.nav}>
+        <Link className={styles.navItem}>Fullcourse</Link>
+        <Link className={styles.navItem}>Appeteizer</Link>
+        <Link className={styles.navItem}>Main Course</Link>
+        <Link className={styles.navItem}>ِDessert</Link>
+        <Link className={styles.navItem}>Drinks</Link>
       </nav>
     </header>
   );

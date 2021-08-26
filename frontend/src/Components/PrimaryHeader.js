@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/primaryHeader.scss";
+import sharedStyles from "../styles/sharedStyles.module.scss";
+import styles from "../styles/primaryHeader.module.scss";
 
 const PrimaryHeader = (props) => {
   const [navOpen, setNavOpen] = useState(false);
@@ -11,40 +12,42 @@ const PrimaryHeader = (props) => {
   };
 
   return (
-    <header className="primary-header">
+    <header className={styles.container}>
       <button
         onClick={handleHamburgerClick}
         aria-expanded={navOpen}
         aria-label="open nav menu"
-        className="menu-toggle menu-toggle-open"
+        className={styles.menuToggle}
       >
         <div
-          className={"hamburger " + (navOpen ? "hamburger-open" : "")}
+          className={`${styles.hamburger} ${
+            navOpen ? styles.hamburgerOpen : ""
+          }`}
           aria-hidden={true}
         >
-          <div className="line"></div>
-          <div className="line"></div>
-          <div className="line"></div>
+          <div className={styles.line}></div>
+          <div className={styles.line}></div>
+          <div className={styles.line}></div>
         </div>
       </button>
       <nav
         role="navigation"
-        className={"main-nav " + (navOpen ? "nav-open" : "")}
+        className={`${styles.nav} ${navOpen ? styles.navOpen : ""}`}
         aria-hidden={!navOpen}
       >
-        <Link to="/" className="navitem">
+        <Link to="/" className={styles.navItem}>
           Home
         </Link>
-        <Link to="/recent" className="navitem">
+        <Link to="/recent" className={styles.navItem}>
           Recent
         </Link>
-        <Link to="/about" className="navitem">
+        <Link to="/about" className={styles.navItem}>
           About
         </Link>
       </nav>
-      <h1 className="logo">Recipe App</h1>
+      <h1 className={styles.logo}>Recipe App</h1>
       <button
-        className="login-button button button-filled button-primary "
+        className={`${styles.loginButton} ${sharedStyles.button} ${sharedStyles.buttonPrimary}`}
         aria-label="Login"
       >
         Login

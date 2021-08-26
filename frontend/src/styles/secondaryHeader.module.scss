@@ -1,6 +1,6 @@
 $secondary-header-height: 10vh;
 
-.secondary-header {
+.container {
   height: $secondary-header-height;
   background: $primary-color;
   overflow-x: auto;
@@ -14,7 +14,7 @@ $secondary-header-height: 10vh;
   }
 }
 
-.search-bar {
+.searchBar {
   $size: 30px;
   background: $secondary-color;
   display: flex;
@@ -83,38 +83,38 @@ $secondary-header-height: 10vh;
   }
 }
 
-.category-nav {
+.nav {
   margin-left: clamp(1rem, 5vw, 3rem);
   display: flex;
   gap: 1rem;
   height: 100%;
   align-items: center;
+}
 
-  .navitem {
-    width: auto;
-    width: fit-content;
-    white-space: nowrap;
-    color: $text-white;
-    text-decoration: none;
-    font-family: "Bodoni Moda", sans-serif;
-    font-weight: 600;
-    font-size: clamp(0.75rem, 5vw, 1.25rem);
-    height: 100%;
-    padding: 0 0.5rem;
-    line-height: $secondary-header-height;
-    transition: background 300ms ease-in;
-    &:hover {
-      background: #ac956c;
-    }
-    &:focus {
-      border-right: 2px solid $secondary-color;
-      border-left: 2px solid $secondary-color;
-    }
+.navItem {
+  width: auto;
+  width: fit-content;
+  white-space: nowrap;
+  color: $text-white;
+  text-decoration: none;
+  font-family: "Bodoni Moda", sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.75rem, 5vw, 1.25rem);
+  height: 100%;
+  padding: 0 0.5rem;
+  line-height: $secondary-header-height;
+  transition: background 300ms ease-in;
+  &:hover {
+    background: #ac956c;
+  }
+  &:focus {
+    border-right: 2px solid $secondary-color;
+    border-left: 2px solid $secondary-color;
   }
 }
 
 @media screen and (min-width: 800px) {
-  .search-bar {
+  .searchBar {
     width: 300px;
     &:focus-within {
       width: 300px;
