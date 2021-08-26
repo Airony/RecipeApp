@@ -54,7 +54,7 @@ const authUser = asyncHandler(async (req, res) => {
     }
 
     const userPassword = rows[0].password;
-    const userId = rows[0].userid;
+    const userId = rows[0]["user_id"];
 
     if (!(await bcrypt.compare(password, userPassword))) {
       res.status(401);
