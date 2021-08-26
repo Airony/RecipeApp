@@ -57,7 +57,10 @@ module.exports = {
     port: 5000,
     publicPath: "http://localhost:5000/dist/",
     hot: true,
-    proxy: { "/api/**": { target: "http://localhost:8000", secure: false } },
+    proxy: {
+      "/api/**": { target: "http://localhost:8000/", secure: false },
+      "/uploads/**": { target: "http://localhost:8000/", secure: false },
+    },
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
 };

@@ -21,7 +21,7 @@ const recipeReducer = (state, action) => {
 const RecipeScreen = (props) => {
   const { id } = useParams();
   const [recipe, dispatchRecipe] = useReducer(recipeReducer, {
-    data: [],
+    data: null,
     isLoading: true,
     error: null,
   });
@@ -38,130 +38,113 @@ const RecipeScreen = (props) => {
   useEffect(() => {
     fetchRecipe();
   }, [fetchRecipe]);
-  return (
-    <article className="recipe-screen-container">
-      <section className="recipe-info">
-        <div className="info-container">
-          <h1 className="recipe-title">Vegetarian Italian Style Pizza</h1>
-          <div className="recipe-author">
-            <span>By </span>
-            <a className="text-button" href="#">
-              Abderraouf Mouhoum
-            </a>
-          </div>
-          <h6 className="recipe-post-date">August 1st, 2021</h6>
-          <div className="additional-properties">
-            <div className="property">
-              <h4 className="property-title">Difficulty: </h4>
-              <h4 className="property-value">Easy</h4>
-            </div>
-            <div className="property">
-              <h4 className="property-title">Preptime: </h4>
-              <h4 className="property-value">90m</h4>
-            </div>
-            <div className="property">
-              <h4 className="property-title">Servings: </h4>
-              <h4 className="property-value">5 - 6</h4>
-            </div>
-            <div className="property">
-              <h4 className="property-title">Cooktime: </h4>
-              <h4 className="property-value">120m</h4>
-            </div>
-          </div>
-        </div>
-        <div className="recipe-img-container">
-          <img src="../pizza-image.jpg" alt="" className="responsive-img" />
-        </div>
-      </section>
-      <section className="recipe-data">
-        <section className="recipe-description">
-          <p className="body-big">
-            Tempor consequat ut elit quis tempor deserunt. Culpa mollit laborum
-            veniam mollit sit mollit cupidatat exercitation ut fugiat anim ut
-            consectetur proident. Officia esse esse proident nulla laborum
-            labore. Ea occaecat minim dolore consectetur deserunt nulla. Id id
-            Lorem laborum in irure do sint laborum aute ipsum Lorem proident.
-            Laborum pariatur fugiat adipisicing deserunt. Fugiat ex excepteur
-            irure voluptate eu eu elit aute consequat.
-          </p>
-        </section>
-        <section className="recipe-instructions">
-          <section className="ingredients">
-            <h2>Ingredients</h2>
-            <hr></hr>
-            <p>
-              <span className="ingredient-index">1/</span> Reprehenderit veniam
-              ut ipsum ipsum officia.
-            </p>
-            <p>
-              <span className="ingredient-index">2/</span>
-              Fugiat aliqua elit cupidatat est quis dolor est nisi laborum
-              cillum.
-            </p>
-            <p>
-              <span className="ingredient-index">3/</span>
-              Culpa in ut minim exercitation minim nulla cillum id aute culpa.
-            </p>
-            <p>Sint irure fugiat irure minim sint ea velit ad do fugiat.</p>
-            <p>
-              <span className="ingredient-index">4/</span>
-              Non minim duis consectetur cillum nostrud quis aliquip duis cillum
-              pariatur.
-            </p>
-          </section>
-          <section className="preparation">
-            <h2>Preparation</h2>
-            <hr></hr>
 
-            <div className="step">
-              <h4>Step 1</h4>
-              <p>
-                Proident consectetur aliqua labore officia cillum voluptate ea
-                aliqua sit. Tempor ea minim aute duis do ad ea eiusmod esse
-                incididunt mollit eiusmod pariatur. Ea consectetur est cupidatat
-                elit ipsum eu laborum ut duis non duis veniam non ea. Ea laborum
-                ea voluptate minim elit deserunt duis ex aliquip consequat do
-                Lorem aliqua. Amet pariatur id deserunt anim et commodo. Sunt id
-                eu do irure minim adipisicing dolor nisi cillum officia ut nisi
-                non minim.
-              </p>
+  return (
+    <>
+      {recipe.isLoading ? (
+        <p>Loading</p>
+      ) : recipe.error ? (
+        <p>
+          Error :
+          {recipe.error.data.message
+            ? recipe.error.data.message
+            : "Server error, please try again later."}
+        </p>
+      ) : (
+        <article className="recipe-screen-container">
+          <section className="recipe-info">
+            <div className="info-container">
+              <h1 className="recipe-title">{recipe.data.title}</h1>
+              <div className="recipe-author">
+                <span>By </span>
+                <a className="text-button" href="#">
+                  {recipe.data["author_name"]}
+                </a>
+              </div>
+              <h6 className="recipe-post-date">August 1st, 2021</h6>
+              <div className="additional-properties">
+                <div className="property">
+                  <h4 className="property-title">Difficulty: </h4>
+                  <h4 className="property-value">
+                    {recipe.data["recipe_difficulty"]}
+                  </h4>
+                </div>
+                <div className="property">
+                  <h4 className="property-title">Preptime: </h4>
+                  <h4 className="property-value">
+                    {recipe.data["prep_time"] + "m"}
+                  </h4>
+                </div>
+                <div className="property">
+                  <h4 className="property-title">Servings: </h4>
+                  <h4 className="property-value">5 - 6</h4>
+                </div>
+                <div className="property">
+                  <h4 className="property-title">Cooktime: </h4>
+                  <h4 className="property-value">
+                    {recipe.data["cook_time"] + "m"}
+                  </h4>
+                </div>
+              </div>
             </div>
-            <div className="step">
-              <h4>Step 2</h4>
-              <p>
-                Pariatur fugiat sunt mollit sit excepteur et et fugiat.Dolore
-                mollit velit ipsum enim laboris cupidatat est consequat elit
-                nostrud incididunt ipsum est proident.
-              </p>
+            <div className="recipe-img-container">
+              <img
+                src={`\\${recipe.data.image}`}
+                alt=""
+                className="responsive-img"
+              />
             </div>
-            <div className="step">
-              <h4>Step 3</h4>
-              <p>
-                Do commodo minim esse aliqua irure excepteur ut incididunt sint
-                ex.Quis reprehenderit et tempor fugiat pariatur id mollit
-                occaecat reprehenderit magna ullamco ut consectetur do.Do veniam
-                occaecat officia irure esse nulla commodo tempor ullamco aliqua
-                sit.Sunt duis cupidatat exercitation excepteur ea culpa
-                consequat commodo Lorem.
-              </p>
-            </div>
-            <hr></hr>
           </section>
-        </section>
-        <section className="write-review">
-          <h4>Write a review</h4>
-          <TextArea placeholder="Write your review" maxLength={1000}></TextArea>
-        </section>
-        <section className="reviews">
-          <h2>Reviews (2)</h2>
-          <hr></hr>
-          <div className="reviews-container">
-            <Review></Review>
-            <Review></Review>
-          </div>
-        </section>
-      </section>
-    </article>
+          <section className="recipe-data">
+            <section className="recipe-description">
+              <p className="body-big">{recipe.data.description}</p>
+            </section>
+            <section className="recipe-instructions">
+              <section className="ingredients">
+                <h2>Ingredients</h2>
+                <hr></hr>
+                {recipe.data.ingredients.map((value, index) => {
+                  return (
+                    <p key={index}>
+                      <span className="ingredient-index">{index + 1}/</span>
+                      {value}
+                    </p>
+                  );
+                })}
+              </section>
+              <section className="preparation">
+                <h2>Preparation</h2>
+                <hr></hr>
+                {recipe.data.steps.map((value, index) => {
+                  return (
+                    <div className="step" key={index}>
+                      <h4>Step {index + 1}</h4>
+                      <p>{value}</p>
+                    </div>
+                  );
+                })}
+                <hr></hr>
+              </section>
+            </section>
+            <section className="write-review">
+              <h4>Write a review</h4>
+              <TextArea
+                placeholder="Write your review"
+                maxLength={1000}
+              ></TextArea>
+            </section>
+            <section className="reviews">
+              <h2>Reviews (2)</h2>
+              <hr></hr>
+              <div className="reviews-container">
+                <Review></Review>
+                <Review></Review>
+              </div>
+            </section>
+          </section>
+        </article>
+      )}
+    </>
   );
 };
 
