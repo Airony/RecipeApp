@@ -57,4 +57,39 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createComment, deleteComment };
+//@desc    Edit comment
+//@route    PUT /api/comments/
+//@access    Private/Admin/Comment poster
+const updateComment = asyncHandler(async (req, res) => {
+  const commentId = req.params.id;
+  const comment = req.body.comment;
+  try {
+    if (!req.isAdmin) {
+      const userId = req.session.userId;
+      const { rows: userIdRows } = await pool.query(
+        `SELECT user_id FROM "comment" WHERE comment_id = $1`,
+        [commentId]
+      );
+      if (userIdRows.length == 0) {
+        throw new ObjectNotFoundError("comment");
+      }
+      if (userIdRows[0]["user_id"] != userId) {
+        res.status(403).end();
+        return;
+      }
+    }
+
+    const { rows: commentRows } = await pool.query(
+      'UPDATE "comment" SET content = $1 WHERE comment_id = $2 RETURNING comment_id,content',
+      [comment, commentId]
+    );
+    if (commentRows.length == 0) {
+      throw new ObjectNotFoundError("comment");
+    }
+    res.status(200).json(commentRows[0]);
+  } catch (error) {
+    throw error;
+  }
+});
+
+module.exports = { createComment, deleteComment, updateComment };
