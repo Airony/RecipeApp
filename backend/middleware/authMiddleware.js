@@ -27,23 +27,35 @@ const authorOnly = asyncHandler(async (req, res, next) => {
   }
 });
 
-const adminOnly = asyncHandler(async (req, res, next) => {
+const hardAdminCheck = asyncHandler(async (req, res, next) => {
   const userId = req.session.userId;
+  const isAdmin = await checkAdmin(userId);
+  if (!isAdmin) {
+    res.status(403);
+    throw new Error("Only admins can do that.");
+  }
+  next();
+});
 
+const softAdminCheck = asyncHandler(async (req, res, next) => {
+  const userId = req.session.userId;
+  const isAdmin = await checkAdmin(userId);
+  if (isAdmin) {
+    req.isAdmin = true;
+  }
+  next();
+});
+
+const checkAdmin = async (userId) => {
   try {
     const { rows } = await pool.query(
       `SELECT * FROM "admin" WHERE user_id = $1;`,
       [userId]
     );
-
-    if (rows.length == 0) {
-      res.status(403);
-      throw new Error("Only admins can do that.");
-    }
-    next();
+    return rows.length > 0;
   } catch (error) {
     throw error;
   }
-});
+};
 
-module.exports = { authOnly, authorOnly, adminOnly };
+module.exports = { authOnly, authorOnly, softAdminCheck, hardAdminCheck };

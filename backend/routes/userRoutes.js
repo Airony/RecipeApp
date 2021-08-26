@@ -6,7 +6,7 @@ const {
   setAuthor,
   unsetAuthor,
 } = require("../controllers/userController.js");
-const { authOnly, adminOnly } = require("../middleware/authMiddleware.js");
+const { authOnly, hardAdminCheck } = require("../middleware/authMiddleware.js");
 const {
   userIdValidationRules,
   validate,
@@ -18,9 +18,15 @@ router.route("/login").post(authUser);
 router.route("/").post(addUser);
 router
   .route("/setAuthor")
-  .post(authOnly, adminOnly, userIdValidationRules(), validate, setAuthor);
+  .post(authOnly, hardAdminCheck, userIdValidationRules(), validate, setAuthor);
 router
   .route("/unsetAuthor")
-  .post(authOnly, adminOnly, userIdValidationRules(), validate, unsetAuthor);
+  .post(
+    authOnly,
+    hardAdminCheck,
+    userIdValidationRules(),
+    validate,
+    unsetAuthor
+  );
 
 module.exports = router;
