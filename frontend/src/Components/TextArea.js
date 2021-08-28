@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import sharedStyles from "../styles/sharedStyles.module.scss";
 import styles from "../styles/textarea.module.scss";
 
-const TextArea = ({ placeholder, maxLength }) => {
+const TextArea = ({ placeholder, maxLength, onSubmit }) => {
   const [Input, setInput] = useState("");
 
   const handleInputChange = (e) => {
@@ -9,7 +10,12 @@ const TextArea = ({ placeholder, maxLength }) => {
   };
 
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(Input);
+      }}
+    >
       <textarea
         placeholder={placeholder}
         value={Input}
@@ -19,7 +25,7 @@ const TextArea = ({ placeholder, maxLength }) => {
       ></textarea>
       <input
         type="submit"
-        className={`button button-primary ${styles.submitButton}`}
+        className={`${sharedStyles.button} ${sharedStyles.buttonPrimary} ${styles.submitButton}`}
         disabled={Input.length > 0 ? false : true}
       ></input>
     </form>

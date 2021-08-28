@@ -40,6 +40,10 @@ const RecipeScreen = (props) => {
     fetchRecipe();
   }, [fetchRecipe]);
 
+  const handleCommentSubmit = (value) => {
+    axios.post("/api/comments/", { recipeId: id, comment: value });
+  };
+
   return (
     <>
       {recipe.isLoading ? (
@@ -134,6 +138,7 @@ const RecipeScreen = (props) => {
               <TextArea
                 placeholder="Write your review"
                 maxLength={1000}
+                onSubmit={handleCommentSubmit}
               ></TextArea>
             </section>
             <section>
