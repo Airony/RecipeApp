@@ -41,6 +41,10 @@ commentVoteValidationRules = () => {
   return [body("commentId").isNumeric(), body("dir").isIn([-1, 0, 1])];
 };
 
+getTopCommentsValidationRules = () => {
+  return [body("recipeId").isNumeric(), body("commentCount").isNumeric()];
+};
+
 const validate = (req, res, next) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
@@ -57,4 +61,5 @@ module.exports = {
   commentValidationrules,
   commentUpdateValidationRules,
   commentVoteValidationRules,
+  getTopCommentsValidationRules,
 };

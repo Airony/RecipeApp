@@ -6,6 +6,7 @@ const {
   updateComment,
   getCommentById,
   voteComment,
+  getTopComments,
 } = require("../controllers/commentController");
 const { authOnly, softAdminCheck } = require("../middleware/authMiddleware");
 const {
@@ -13,7 +14,12 @@ const {
   validate,
   commentUpdateValidationRules,
   commentVoteValidationRules,
+  getTopCommentsValidationRules,
 } = require("../middleware/validateMiddleware");
+
+router
+  .route("/getTop")
+  .get(getTopCommentsValidationRules(), validate, getTopComments);
 
 router
   .route("/")
