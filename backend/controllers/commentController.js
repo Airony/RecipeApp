@@ -100,7 +100,10 @@ const getCommentById = asyncHandler(async (req, res) => {
   const commentId = req.params.id;
   try {
     const { rows: commentRows } = await pool.query(
-      `SELECT comment_id, content FROM "comment" WHERE comment_id = $1`,
+      `
+    SELECT u.full_name,u.user_id, c.comment_id, content FROM "comment" AS c
+      LEFT JOIN "user" AS u ON (c.user_id = u.user_id)
+    WHERE comment_id = $1;`,
       [commentId]
     );
     if (commentRows.length == 0) {
@@ -157,24 +160,19 @@ const getTopComments = asyncHandler(async (req, res) => {
   try {
     const { rows: commentRows } = await pool.query(
       `
-      SELECT c.comment_id, c.content, sum(CASE WHEN v.vote = true THEN 1 WHEN v.vote = false THEN -1 ELSE 0 end)::INT AS points 
-      FROM comment c LEFT JOIN comment_vote v ON(c.comment_id = v.comment_id) 
-      WHERE c.recipe_id = $1 GROUP BY c.comment_id ORDER BY points DESC LIMIT $2;
+      SELECT u.full_name,u.user_id,c.comment_id, c.content,
+      sum(CASE WHEN v.vote = true THEN 1 WHEN v.vote = false THEN -1 ELSE 0 end)::INT AS points 
+      FROM comment AS c 
+        LEFT JOIN comment_vote AS v ON (c.comment_id = v.comment_id)
+        LEFT JOIN "user" AS u ON (c.user_id = u.user_id) 
+      WHERE c.recipe_id = $1  GROUP BY c.comment_id, u.full_name, u.user_id ORDER BY points DESC LIMIT $2;
       `,
       [recipeId, commentCount]
     );
+    res.status(200).json(commentRows);
   } catch (error) {
     throw error;
   }
-  const { rows: commentRows } = await pool.query(
-    `
-  SELECT c.comment_id, c.content, sum(CASE WHEN v.vote = true THEN 1 WHEN v.vote = false THEN -1 ELSE 0 end)::INT AS points 
-  FROM comment c LEFT JOIN comment_vote v ON(c.comment_id = v.comment_id) 
-  WHERE c.recipe_id = $1 GROUP BY c.comment_id ORDER BY points DESC LIMIT $2;
-  `,
-    [recipeId, commentCount]
-  );
-  res.status(200).json(commentRows);
 });
 
 module.exports = {
