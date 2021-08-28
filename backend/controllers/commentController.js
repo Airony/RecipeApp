@@ -107,11 +107,7 @@ const getCommentById = asyncHandler(async (req, res) => {
       throw new ObjectNotFoundError("Comment");
     }
     const { rows: voteRows } = await pool.query(
-      `SELECT (
-            SELECT COUNT(vote)::INT FROM "comment_vote" WHERE (comment_id = $1 AND vote = true)
-        ) - (
-            SELECT COUNT(vote)::INT FROM "comment_vote" WHERE (comment_id = $1 AND vote = false)
-        ) AS points `,
+      `SELECT sum(CASE WHEN vote = true THEN 1 WHEN vote = false THEN -1 ELSE 0 end)::INT AS points FROM "comment_vote" WHERE comment_id = $1`,
       [commentId]
     );
     res.status(200).json({ ...commentRows[0], ...voteRows[0] });
