@@ -5,12 +5,14 @@ const {
   deleteComment,
   updateComment,
   getCommentById,
+  voteComment,
 } = require("../controllers/commentController");
 const { authOnly, softAdminCheck } = require("../middleware/authMiddleware");
 const {
   commentValidationrules,
   validate,
   commentUpdateValidationRules,
+  commentVoteValidationRules,
 } = require("../middleware/validateMiddleware");
 
 router
@@ -28,5 +30,8 @@ router
     validate,
     updateComment
   );
+router
+  .route("/vote")
+  .post(authOnly, commentVoteValidationRules(), validate, voteComment);
 
 module.exports = router;

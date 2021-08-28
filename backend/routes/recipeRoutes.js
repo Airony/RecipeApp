@@ -11,7 +11,6 @@ const {
   recipeValidationRules,
   validate,
 } = require("../middleware/validateMiddleware");
-
 router.route("/:id").get(getRecipeById);
 router
   .route("/")

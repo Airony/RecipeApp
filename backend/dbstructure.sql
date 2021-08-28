@@ -37,6 +37,13 @@ CREATE TABLE "comment"(
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE "comment_vote"(
+    comment_id INT NOT NULL references "comment"(comment_id) ON DELETE CASCADE,
+    user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE,
+    vote BOOLEAN NOT NULL,
+    UNIQUE(user_id,comment_id)
+);
+
 CREATE TABLE "admin"(
     user_id INT NOT NULL references "user"(user_id) ON DELETE CASCADE
 );
@@ -56,9 +63,3 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
-
-
-
-
-
-

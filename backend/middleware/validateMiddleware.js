@@ -37,6 +37,10 @@ commentUpdateValidationRules = () => {
   return [body("comment").exists().isLength({ max: 1000 })];
 };
 
+commentVoteValidationRules = () => {
+  return [body("commentId").isNumeric(), body("dir").isIn([-1, 0, 1])];
+};
+
 const validate = (req, res, next) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
@@ -52,4 +56,5 @@ module.exports = {
   validate,
   commentValidationrules,
   commentUpdateValidationRules,
+  commentVoteValidationRules,
 };

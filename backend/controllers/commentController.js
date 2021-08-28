@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const { FOREIGN_KEY_VIOLATION } = require("pg-error-constants");
 const pool = require("../config/db.js");
 const { ForeignKeyError, ObjectNotFoundError } = require("../utils/Error.js");
 
@@ -111,9 +112,42 @@ const getCommentById = asyncHandler(async (req, res) => {
   }
 });
 
+const voteComment = asyncHandler(async (req, res) => {
+  const userId = req.session.userId;
+  const { commentId, dir } = req.body;
+  try {
+    if (dir == 0) {
+      console.log("Deleting");
+      const { rows } = await pool.query(
+        `DELETE FROM "comment_vote" WHERE (comment_id = $1 AND user_id = $2) RETURNING *`,
+        [commentId, userId]
+      );
+      res.status(202).end();
+      return;
+    }
+    const insertValue = dir == 1 ? 1 : 0;
+
+    const { rows } = await pool.query(
+      `INSERT INTO "comment_vote"(comment_id,user_id,vote) VALUES($1,$2,$3) 
+                                ON CONFLICT (comment_id,user_id)
+                                DO UPDATE SET vote = $3 WHERE (comment_vote.comment_id = $1 AND  comment_vote.user_id = $2);`,
+      [commentId, userId, insertValue]
+    );
+    res.status(202).end();
+  } catch (error) {
+    switch (error.code) {
+      case FOREIGN_KEY_VIOLATION:
+        throw new ForeignKeyError(error);
+      default:
+        throw error;
+    }
+  }
+});
+
 module.exports = {
   createComment,
   deleteComment,
   updateComment,
   getCommentById,
+  voteComment,
 };

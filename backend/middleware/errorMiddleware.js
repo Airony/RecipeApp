@@ -27,6 +27,8 @@ const errorHandler = (err, req, res, next) => {
       case "comment_recipe_id_fkey":
         message = "Invalid recipe id.";
         break;
+      case "comment_vote_comment_id_fkey":
+        message = "Invalid comment id.";
       default:
         break;
     }
