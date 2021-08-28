@@ -156,7 +156,7 @@ const voteComment = asyncHandler(async (req, res) => {
 //@route    GET /api/comments/getTop
 //@access    Public
 const getTopComments = asyncHandler(async (req, res) => {
-  const { recipeId, commentCount } = req.body;
+  const { recipeId, commentCount } = req.query;
   try {
     const { rows: commentRows } = await pool.query(
       `

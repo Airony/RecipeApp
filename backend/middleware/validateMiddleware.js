@@ -1,8 +1,4 @@
-const {
-  body,
-  validationResult,
-  ValidationChain,
-} = require("express-validator");
+const { body, validationResult, query } = require("express-validator");
 const { InvalidPropertyValueError } = require("../utils/Error");
 
 recipeValidationRules = () => {
@@ -42,13 +38,14 @@ commentVoteValidationRules = () => {
 };
 
 getTopCommentsValidationRules = () => {
-  return [body("recipeId").isNumeric(), body("commentCount").isNumeric()];
+  return [query("recipeId").isNumeric(), query("commentCount").isNumeric()];
 };
 
 const validate = (req, res, next) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
     const invalidParam = validationObj.errors[0].param;
+    console.log(validationObj.errors[0]);
     throw new InvalidPropertyValueError(invalidParam);
   }
   next();
