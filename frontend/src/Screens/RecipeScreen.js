@@ -5,6 +5,8 @@ import Review from "../Components/Review";
 import TextArea from "../Components/TextArea";
 import sharedStyles from "../styles/sharedStyles.module.scss";
 import styles from "../styles/recipeScreen.module.scss";
+import ReviewContainer from "../Components/ReviewContainer";
+import ErrorMessage from "../Components/ErrorMessage";
 
 const recipeReducer = (state, action) => {
   switch (action.type) {
@@ -52,7 +54,7 @@ const RecipeScreen = (props) => {
         <ErrorMessage
           preMessage="Couldn't load recipe : "
           error={recipe.error}
-        ></ErrorMessage>
+        />
       ) : (
         <article className={styles.container}>
           <section className={styles.info}>
@@ -139,14 +141,7 @@ const RecipeScreen = (props) => {
                 onSubmit={handleCommentSubmit}
               ></TextArea>
             </section>
-            <section>
-              <h2>Reviews (2)</h2>
-              <hr></hr>
-              <div>
-                <Review></Review>
-                <Review></Review>
-              </div>
-            </section>
+            <ReviewContainer recipeId={id} />
           </section>
         </article>
       )}
