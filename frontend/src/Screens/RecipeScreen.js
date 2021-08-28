@@ -49,12 +49,10 @@ const RecipeScreen = (props) => {
       {recipe.isLoading ? (
         <p>Loading</p>
       ) : recipe.error ? (
-        <p>
-          Error :
-          {recipe.error.data.message
-            ? recipe.error.data.message
-            : "Server error, please try again later."}
-        </p>
+        <ErrorMessage
+          preMessage="Couldn't load recipe : "
+          error={recipe.error}
+        ></ErrorMessage>
       ) : (
         <article className={styles.container}>
           <section className={styles.info}>
