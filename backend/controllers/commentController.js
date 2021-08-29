@@ -97,14 +97,18 @@ const updateComment = asyncHandler(async (req, res) => {
 //@route    PUT /api/comments/:id
 //@access    Public
 const getCommentById = asyncHandler(async (req, res) => {
+  const userId = req.session.userId;
   const commentId = req.params.id;
   try {
     const { rows: commentRows } = await pool.query(
       `
-    SELECT u.full_name,u.user_id, c.comment_id, content FROM "comment" AS c
+    SELECT u.full_name,u.user_id, (SELECT v.vote WHERE v.user_id = $2) AS user_vote, c.comment_id, content
+    FROM "comment" AS c
       LEFT JOIN "user" AS u ON (c.user_id = u.user_id)
-    WHERE comment_id = $1;`,
-      [commentId]
+      LEFT JOIN "comment_vote" AS v ON (c.comment_id = v.comment_id)
+    WHERE c.comment_id = $1 
+    GROUP BY c.comment_id, u.full_name,u.user_id,v.user_id,v.vote;`,
+      [commentId, userId]
     );
     if (commentRows.length == 0) {
       throw new ObjectNotFoundError("Comment");
@@ -156,18 +160,19 @@ const voteComment = asyncHandler(async (req, res) => {
 //@route    GET /api/comments/getTop
 //@access    Public
 const getTopComments = asyncHandler(async (req, res) => {
+  const userId = req.session.userId;
   const { recipeId, commentCount } = req.query;
   try {
     const { rows: commentRows } = await pool.query(
       `
-      SELECT u.full_name,u.user_id,c.comment_id, c.content,
+      SELECT u.full_name,u.user_id, (SELECT v.vote WHERE v.user_id = $3) AS user_vote, c.comment_id, c.content,
       sum(CASE WHEN v.vote = true THEN 1 WHEN v.vote = false THEN -1 ELSE 0 end)::INT AS points 
       FROM comment AS c 
         LEFT JOIN comment_vote AS v ON (c.comment_id = v.comment_id)
         LEFT JOIN "user" AS u ON (c.user_id = u.user_id) 
-      WHERE c.recipe_id = $1  GROUP BY c.comment_id, u.full_name, u.user_id ORDER BY points DESC LIMIT $2;
+      WHERE c.recipe_id = $1  GROUP BY c.comment_id, u.full_name, u.user_id,v.vote,v.user_id ORDER BY points DESC LIMIT $2;
       `,
-      [recipeId, commentCount]
+      [recipeId, commentCount, userId]
     );
     res.status(200).json(commentRows);
   } catch (error) {
