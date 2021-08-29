@@ -1,3 +1,6 @@
+$upvote-color: #65e065;
+$downvote-color: #df6666;
+
 .container {
   margin-bottom: 0.5rem;
   border-bottom: 1px black solid;
@@ -13,13 +16,6 @@
 
 .ratingsContainer {
   margin: 0.5rem 0 1rem 0;
-  button {
-    width: 16px;
-    height: 16px;
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-  }
   p {
     color: black;
     display: inline-block;
@@ -27,12 +23,27 @@
   }
 }
 
+.upvote,
+.downvote {
+  width: 10px;
+  height: 10px;
+  border: solid $text-medium;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+}
+
 .upvote {
   transform: rotate(-135deg);
+  &Selected {
+    border-color: $upvote-color;
+  }
 }
 .downvote {
   margin-left: 1rem;
   transform: translateY(-50%) rotate(45deg);
+  &Selected {
+    border-color: $downvote-color;
+  }
 }
 
 .container:last-child {

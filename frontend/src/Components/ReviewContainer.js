@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useReducer } from "react";
 import ErrorMessage from "./ErrorMessage";
 import Review from "./Review";
 
-const COMMENT_COUNT = 5;
+const COMMENT_COUNT = 10;
 
 const recipeReducer = (state, action) => {
   switch (action.type) {
@@ -63,6 +63,7 @@ const ReviewContainer = ({ recipeId }) => {
                   posterName={value["full_name"]}
                   content={value.content}
                   points={value.points}
+                  defaultVote={value["user_vote"]}
                   key={index}
                 />
               );
