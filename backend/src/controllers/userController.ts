@@ -1,16 +1,14 @@
-const asyncHandler = require("express-async-handler");
-const pool = require("../config/db.js");
-const bcrypt = require("bcrypt");
-const {
-  UNIQUE_VIOLATION,
-  FOREIGN_KEY_VIOLATION,
-} = require("pg-error-constants");
-const { ObjectNotFoundError } = require("../utils/Error.js");
+import { Request, Response } from "express";
+import asyncHandler from "express-async-handler";
+import pool from "../config/db";
+import bcrypt from "bcrypt";
+const { PostgresError } = require("pg-error-enum");
+import { ObjectNotFoundError } from "../utils/Error";
 
 //@desc    Fetch all users
 //@route    GET /api/users
 //@access    Public
-const getUsers = asyncHandler(async (req, res) => {
+export const getUsers = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query('SELECT user_id, full_name from "user";');
     res.status(200).json(rows);
@@ -22,7 +20,7 @@ const getUsers = asyncHandler(async (req, res) => {
 //@desc    Add a new user
 //@route    POST /api/users
 //@access    Public
-const addUser = asyncHandler(async (req, res) => {
+export const addUser = asyncHandler(async (req: Request, res: Response) => {
   const { fullName, email, password, profilePicture } = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -40,7 +38,7 @@ const addUser = asyncHandler(async (req, res) => {
 //@desc    Auth user and set session cookie
 //@route    POST /api/users/login
 //@access    Public
-const authUser = asyncHandler(async (req, res) => {
+export const authUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const { rows } = await pool.query(
@@ -71,16 +69,16 @@ const authUser = asyncHandler(async (req, res) => {
 //@desc    Set user as an author
 //@route    POST /api/users/setAuthor
 //@access    Private/Admin
-const setAuthor = asyncHandler(async (req, res) => {
+export const setAuthor = asyncHandler(async (req: Request, res: Response) => {
   const targetId = req.body.userId;
   try {
     await pool.query('INSERT INTO "author"(user_id) VALUES($1)', [targetId]);
-  } catch (error) {
+  } catch (error: any) {
     switch (error.code) {
-      case FOREIGN_KEY_VIOLATION:
+      case PostgresError.FOREIGN_KEY_VIOLATION:
         res.status(404);
         throw new ObjectNotFoundError("User");
-      case UNIQUE_VIOLATION:
+      case PostgresError.UNIQUE_VIOLATION:
         break;
       default:
         throw error;
@@ -92,7 +90,7 @@ const setAuthor = asyncHandler(async (req, res) => {
 //@desc    Unset user as an author
 //@route    POST /api/users/unsetAuthor
 //@access    Private/Admin
-const unsetAuthor = asyncHandler(async (req, res) => {
+export const unsetAuthor = asyncHandler(async (req: Request, res: Response) => {
   const targetId = req.body.userId;
   try {
     const { rows } = await pool.query(
@@ -107,5 +105,3 @@ const unsetAuthor = asyncHandler(async (req, res) => {
   }
   res.status(204).end();
 });
-
-module.exports = { getUsers, addUser, authUser, setAuthor, unsetAuthor };

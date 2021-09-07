@@ -1,16 +1,17 @@
-const express = require("express");
+import express from "express";
 const {
   getUsers,
   addUser,
   authUser,
   setAuthor,
   unsetAuthor,
-} = require("../controllers/userController.js");
-const { authOnly, hardAdminCheck } = require("../middleware/authMiddleware.js");
+} = require("../controllers/userController");
+const { authOnly, hardAdminCheck } = require("../middleware/authMiddleware");
 const {
   userIdValidationRules,
   validate,
-} = require("../middleware/validateMiddleware.js");
+} = require("../middleware/validateMiddleware");
+
 const router = express.Router();
 
 router.route("/").get(getUsers);
@@ -29,4 +30,4 @@ router
     unsetAuthor
   );
 
-module.exports = router;
+export default router;

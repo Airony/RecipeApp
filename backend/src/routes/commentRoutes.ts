@@ -1,21 +1,21 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const {
+import {
   createComment,
   deleteComment,
   updateComment,
   getCommentById,
   voteComment,
   getTopComments,
-} = require("../controllers/commentController");
-const { authOnly, softAdminCheck } = require("../middleware/authMiddleware");
-const {
+} from "../controllers/commentController";
+import { authOnly, softAdminCheck } from "../middleware/authMiddleware";
+import {
   commentValidationrules,
   validate,
   commentUpdateValidationRules,
   commentVoteValidationRules,
   getTopCommentsValidationRules,
-} = require("../middleware/validateMiddleware");
+} from "../middleware/validateMiddleware";
 
 router
   .route("/getTop")
@@ -40,4 +40,4 @@ router
   .route("/vote")
   .post(authOnly, commentVoteValidationRules(), validate, voteComment);
 
-module.exports = router;
+export default router;

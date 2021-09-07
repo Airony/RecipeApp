@@ -1,7 +1,7 @@
-const { body, validationResult, query } = require("express-validator");
-const { InvalidPropertyValueError } = require("../utils/Error");
+import { body, validationResult, query } from "express-validator";
+import { InvalidPropertyValueError } from "../utils/Error";
 
-recipeValidationRules = () => {
+export const recipeValidationRules = () => {
   return [
     body("title", "You must specify a title.").exists(),
     body("description", "You must specify a description.").exists(),
@@ -18,45 +18,38 @@ recipeValidationRules = () => {
   ];
 };
 
-const userIdValidationRules = () => {
+export const userIdValidationRules = () => {
   return [body("userId").isNumeric()];
 };
 
-commentValidationrules = () => {
+export const commentValidationrules = () => {
   return [
     body("comment").exists().isLength({ max: 1000 }).bail(),
     body("recipeId").isNumeric().bail(),
   ];
 };
 
-commentUpdateValidationRules = () => {
+export const commentUpdateValidationRules = () => {
   return [body("comment").exists().isLength({ max: 1000 })];
 };
 
-commentVoteValidationRules = () => {
+export const commentVoteValidationRules = () => {
   return [body("commentId").isNumeric(), body("dir").isIn([-1, 0, 1])];
 };
 
-getTopCommentsValidationRules = () => {
+export const getTopCommentsValidationRules = () => {
   return [query("recipeId").isNumeric(), query("commentCount").isNumeric()];
 };
 
-const validate = (req, res, next) => {
+export const validate = (
+  req: Express.Request,
+  res: Express.Response,
+  next: Function
+) => {
   const validationObj = validationResult(req);
   if (!validationObj.isEmpty()) {
-    const invalidParam = validationObj.errors[0].param;
-    console.log(validationObj.errors[0]);
+    const invalidParam = validationObj.array()[0].param;
     throw new InvalidPropertyValueError(invalidParam);
   }
   next();
-};
-
-module.exports = {
-  recipeValidationRules,
-  userIdValidationRules,
-  validate,
-  commentValidationrules,
-  commentUpdateValidationRules,
-  commentVoteValidationRules,
-  getTopCommentsValidationRules,
 };

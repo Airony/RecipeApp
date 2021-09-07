@@ -1,21 +1,28 @@
-const {
+import { NODE_ENV } from "./../config/server.config";
+import { Request, Response, NextFunction } from "express";
+import {
   InvalidPropertyValueError,
   ObjectNotFoundError,
   ForeignKeyError,
-} = require("../utils/Error");
-const fs = require("fs");
+} from "../utils/Error";
+import fs from "fs";
 
-const errorHandler = (err, req, res, next) => {
+export default (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Remove file incase of error
   if (req.file) {
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.log(err);
+    fs.unlink(req.file.path, (error) => {
+      if (error) {
+        console.log(error);
       }
     });
   }
 
-  message = err.message;
+  let message = err.message;
   let statusCode = 500;
   if (err instanceof InvalidPropertyValueError) {
     statusCode = 400;
@@ -29,6 +36,7 @@ const errorHandler = (err, req, res, next) => {
         break;
       case "comment_vote_comment_id_fkey":
         message = "Invalid comment id.";
+        break;
       default:
         break;
     }
@@ -36,8 +44,6 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).json({
     message: message,
-    stack: process.env.NODE_ENV === "developement" ? err.stack : null,
+    stack: NODE_ENV ? err.stack : null,
   });
 };
-
-module.exports = { errorHandler };

@@ -1,12 +1,12 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 const {
   getRecipes,
   getRecipeById,
   createRecipe,
 } = require("../controllers/recipeController");
-const { authOnly, authorOnly } = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadMiddleware");
+import { authOnly, authorOnly } from "../middleware/authMiddleware";
+import upload from "../middleware/uploadMiddleware";
 const {
   recipeValidationRules,
   validate,
@@ -24,4 +24,4 @@ router
     createRecipe
   );
 
-module.exports = router;
+export default router;
